@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.38.2 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="stock">gtk-missing-image</property>
+    <property name="icon_size">2</property>
+  </object>
+  <object class="GtkListStore" id="list_belanja">
+    <columns>
+      <!-- column-name list_nama -->
+      <column type="gchararray"/>
+      <!-- column-name list_qty -->
+      <column type="gchararray"/>
+      <!-- column-name list_harga -->
+      <column type="gchararray"/>
+      <!-- column-name list_diskon -->
+      <column type="gchararray"/>
+      <!-- column-name list_jumlah -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkApplicationWindow">
+    <property name="can-focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkPaned">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <property name="position">24</property>
+            <property name="position-set">True</property>
+            <property name="wide-handle">True</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
+                    <property name="label" translatable="yes">Toko Kita</property>
+                    <property name="single-line-mode">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <attributes>
+                      <attribute name="weight" value="ultraheavy"/>
+                      <attribute name="scale" value="1.5"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes"> Rekap Kas</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="image">image1</property>
+                        <property name="relief">none</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="resize">False</property>
+                <property name="shrink">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-start">6</property>
+                <property name="margin-bottom">6</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkFrame">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
+                    <property name="label-xalign">0.009999999776482582</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="name">out_total</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-start">2</property>
+                        <property name="margin-end">2</property>
+                        <property name="margin-top">2</property>
+                        <property name="margin-bottom">2</property>
+                        <property name="label" translatable="yes">total_belanja</property>
+                        <property name="xalign">1</property>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Total</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="shadow-type">in</property>
+                    <child>
+                      <object class="GtkTreeView">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="model">list_belanja</property>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection"/>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="title" translatable="yes">NAMA BARANG</property>
+                            <property name="expand">True</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="itm_nama"/>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="min-width">160</property>
+                            <property name="title" translatable="yes">QTY</property>
+                            <property name="alignment">0.5</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="itm_qty"/>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="min-width">160</property>
+                            <property name="title" translatable="yes">HARGA</property>
+                            <property name="alignment">1</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="itm_harga"/>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="min-width">160</property>
+                            <property name="title" translatable="yes">DISKON</property>
+                            <property name="alignment">1</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="itm_diskon"/>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
+                            <property name="min-width">160</property>
+                            <property name="title" translatable="yes">JUMLAH</property>
+                            <property name="alignment">1</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="itm_jumlah"/>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-top">6</property>
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkEntry">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="margin-end">6</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="homogeneous">True</property>
+                        <child>
+                          <object class="GtkFrame">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="margin-end">6</property>
+                            <property name="label-xalign">0.009999999776482582</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="margin-start">2</property>
+                                <property name="margin-end">2</property>
+                                <property name="margin-top">2</property>
+                                <property name="margin-bottom">2</property>
+                                <property name="label" translatable="yes">label</property>
+                                <property name="xalign">1</property>
+                              </object>
+                            </child>
+                            <child type="label">
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">QTY</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkFrame">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label-xalign">0.009999999776482582</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="margin-start">2</property>
+                                <property name="margin-end">2</property>
+                                <property name="margin-top">2</property>
+                                <property name="margin-bottom">2</property>
+                                <property name="label" translatable="yes">label</property>
+                                <property name="xalign">1</property>
+                              </object>
+                            </child>
+                            <child type="label">
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Potongan</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="resize">True</property>
+                <property name="shrink">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStatusbar">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">2</property>
+            <property name="margin-end">2</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">2</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
