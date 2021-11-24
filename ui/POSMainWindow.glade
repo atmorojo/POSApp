@@ -32,12 +32,15 @@
       <column type="gchararray"/>
       <!-- column-name list_jumlah -->
       <column type="gchararray"/>
+      <!-- column-name list_barcode -->
+      <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkApplicationWindow">
+  <object class="GtkApplicationWindow" id="KitaPos">
     <property name="width-request">-1</property>
     <property name="can-focus">False</property>
     <property name="show-menubar">False</property>
+    <signal name="destroy" handler="on_KitaPos_destroy" swapped="no"/>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -204,7 +207,7 @@
                     <property name="margin-bottom">6</property>
                     <property name="label-xalign">0.009999999776482582</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="TotalLabel">
                         <property name="name">out_total</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
@@ -212,7 +215,7 @@
                         <property name="margin-end">2</property>
                         <property name="margin-top">2</property>
                         <property name="margin-bottom">2</property>
-                        <property name="label" translatable="yes">{{ TOTAL_BELANJA }}</property>
+                        <property name="label" translatable="yes">0</property>
                         <property name="xalign">1</property>
                         <attributes>
                           <attribute name="scale" value="8"/>
@@ -246,6 +249,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="model">list_belanja</property>
+                        <property name="enable-search">False</property>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection"/>
                         </child>
@@ -255,6 +259,9 @@
                             <property name="expand">True</property>
                             <child>
                               <object class="GtkCellRendererText" id="itm_nama"/>
+                              <attributes>
+                                <attribute name="text">0</attribute>
+                              </attributes>
                             </child>
                           </object>
                         </child>
@@ -265,6 +272,9 @@
                             <property name="alignment">0.5</property>
                             <child>
                               <object class="GtkCellRendererText" id="itm_qty"/>
+                              <attributes>
+                                <attribute name="text">1</attribute>
+                              </attributes>
                             </child>
                           </object>
                         </child>
@@ -274,7 +284,12 @@
                             <property name="title" translatable="yes">HARGA</property>
                             <property name="alignment">1</property>
                             <child>
-                              <object class="GtkCellRendererText" id="itm_harga"/>
+                              <object class="GtkCellRendererText" id="itm_harga">
+                                <property name="xalign">1</property>
+                              </object>
+                              <attributes>
+                                <attribute name="text">2</attribute>
+                              </attributes>
                             </child>
                           </object>
                         </child>
@@ -284,7 +299,12 @@
                             <property name="title" translatable="yes">DISKON</property>
                             <property name="alignment">1</property>
                             <child>
-                              <object class="GtkCellRendererText" id="itm_diskon"/>
+                              <object class="GtkCellRendererText" id="itm_diskon">
+                                <property name="xalign">1</property>
+                              </object>
+                              <attributes>
+                                <attribute name="text">3</attribute>
+                              </attributes>
                             </child>
                           </object>
                         </child>
@@ -294,7 +314,12 @@
                             <property name="title" translatable="yes">JUMLAH</property>
                             <property name="alignment">1</property>
                             <child>
-                              <object class="GtkCellRendererText" id="itm_jumlah"/>
+                              <object class="GtkCellRendererText" id="itm_jumlah">
+                                <property name="xalign">1</property>
+                              </object>
+                              <attributes>
+                                <attribute name="text">4</attribute>
+                              </attributes>
                             </child>
                           </object>
                         </child>
@@ -314,10 +339,13 @@
                     <property name="margin-top">6</property>
                     <property name="homogeneous">True</property>
                     <child>
-                      <object class="GtkEntry">
+                      <object class="GtkEntry" id="BarcodeEntry">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="has-focus">True</property>
+                        <property name="is-focus">True</property>
                         <property name="margin-end">6</property>
+                        <signal name="activate" handler="on_BarcodeEntry_activate" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -435,13 +463,16 @@
           </packing>
         </child>
         <child>
-          <object class="GtkStatusbar">
+          <object class="GtkLabel" id="StatusLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="margin-start">2</property>
             <property name="margin-end">2</property>
-            <property name="orientation">vertical</property>
-            <property name="spacing">2</property>
+            <property name="margin-top">2</property>
+            <property name="margin-bottom">2</property>
+            <attributes>
+              <attribute name="scale" value="2"/>
+            </attributes>
           </object>
           <packing>
             <property name="expand">False</property>
