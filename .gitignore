@@ -1,3 +1,6 @@
 # created by virtualenv automatically
 .env/
 *.swp
+*/__pycache__/
+*.FDB
+*.pyc

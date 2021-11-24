@@ -1,0 +1,94 @@
+#!/usr/bin/python3
+
+import gi
+import time
+import db.crud as db
+
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk
+
+def clearBarcodeEntry():
+    barcodeEntry.set_text('')
+
+def hitungTotal(model):
+    totalBelanja = 0
+    for baris in model:
+        totalBelanja = totalBelanja + int(baris[4].replace(",", ""))
+    return totalBelanja
+
+def updateListStore(barkot, model):
+    barkotada = False
+    sukses = False
+    for baris in model:
+        if baris[5] == barkot:
+            model.set(baris.iter, 1, "jumlah baru")
+            barkotada = True
+            sukses = True
+            break
+
+    if not barkotada:
+        try:
+            sukses = True
+            produk = sumber_data.baca_produk(barkot)
+            model.append((
+                produk.getNama(),
+                '10',
+                str(f'{produk.getHarga1():,.0f}'),
+                '0',
+                str(f'{produk.getHarga1() * 10:,.0f}'),
+                produk.getBarcode()
+                ))
+
+        except IndexError:
+            sukses = False
+
+    totalBelanja = hitungTotal(model)
+    return (sukses, totalBelanja)
+
+class Handler:
+    def on_KitaPos_destroy(self, *args):
+        sumber_data.tutup()
+        Gtk.main_quit()
+
+    def on_BarcodeEntry_activate(self, *args):
+        barkot = barcodeEntry.get_text()
+        clearBarcodeEntry()
+
+        if barkot == "":
+            return
+
+        (update, totalBelanja) = updateListStore(barkot, listProduk)
+        print(update)
+        print(totalBelanja)
+
+        if update:
+            totalLabel.set_text(str(f'{totalBelanja:,}'))
+        else:
+            statusLabel.set_text("Barang Tidak Ditemukan")
+
+
+builder = Gtk.Builder()
+builder.add_from_file("ui/POSMainWindow.glade")
+builder.connect_signals(Handler())
+
+listProduk = builder.get_object("list_belanja")
+
+window = builder.get_object("KitaPos")
+window.show_all()
+window.maximize()
+
+barcodeEntry = builder.get_object("BarcodeEntry")
+totalLabel = builder.get_object("TotalLabel")
+statusLabel = builder.get_object("StatusLabel")
+
+############################################################
+
+sumber_data = db.SumberData( \
+        'localhost', \
+        3050, \
+        'C:\msys64\home\KITAGROUP\KASIRRUSAK\BACKOFFICE.FDB', \
+        'SYSDBA', \
+        'masterkey'
+        )
+
+Gtk.main()
