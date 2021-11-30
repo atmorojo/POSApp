@@ -6,72 +6,149 @@ import db.crud as db
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
+from gi.repository import Gdk
+from fuzzywuzzy import fuzz
 
-def clearBarcodeEntry():
-    barcodeEntry.set_text('')
+def ranking(ratio):
+    return ratio[-1]
 
-def hitungTotal(model):
+def clearText(widget):
+    widget.set_text('')
+
+def hitungTotalBelanja(model):
     totalBelanja = 0
     for baris in model:
         totalBelanja = totalBelanja + int(baris[4].replace(",", ""))
-    return totalBelanja
+
+    totalLabel.set_text(str(f'{totalBelanja:,}'))
+
+def updateBaris(model, baris, qty):
+    qtyBaru = int(baris[1]) + int(qty)
+    model.set(baris.iter, 1, str(qtyBaru))
+    model.set(baris.iter, 4, str(f'{int(baris[2].replace(",", "")) * qtyBaru:,.0f}'))
+    hitungTotalBelanja(model)
+
+def addQtyLastIter(qty):
+    updateBaris(listProduk, listProduk[-1], qty)
+
+def jenisHarga(produk):
+    harga = {
+            'Harga 1' : produk.getHarga1(),
+            'Harga 2' : produk.getHarga2(),
+            'Harga 3' : produk.getHarga3()
+            }[jnsHargaLabel.get_text()]
+    return harga
 
 def updateListStore(barkot, model):
-    barkotada = False
+    kodeproduk = False
     sukses = False
+    produk = sumber_data.baca_produk(barkot)
+
+    if qtyLabel.get_text() == "":
+        qty = "1" 
+    else:
+        qty = qtyLabel.get_text() 
+
     for baris in model:
-        if baris[5] == barkot:
-            model.set(baris.iter, 1, "jumlah baru")
-            barkotada = True
+        if baris[6] == produk.getKode():
+            updateBaris(model, baris, qty)
+            kodeproduk = True
             sukses = True
             break
 
-    if not barkotada:
+    if not kodeproduk:
         try:
             sukses = True
-            produk = sumber_data.baca_produk(barkot)
             model.append((
                 produk.getNama(),
-                '10',
-                str(f'{produk.getHarga1():,.0f}'),
-                '0',
-                str(f'{produk.getHarga1() * 10:,.0f}'),
-                produk.getBarcode()
+                qty,
+                str(f'{jenisHarga(produk):,.0f}'),
+                jnsHargaLabel.get_text().replace("Harga ", ""),
+                str(f'{jenisHarga(produk) * int(qty):,.0f}'),
+                produk.getBarcode(),
+                produk.getKode()
                 ))
 
         except IndexError:
             sukses = False
 
-    totalBelanja = hitungTotal(model)
-    return (sukses, totalBelanja)
+    clearText(qtyLabel)
+    hitungTotalBelanja(model)
+    return sukses
 
 class Handler:
+    data_barang = list()
+
     def on_KitaPos_destroy(self, *args):
         sumber_data.tutup()
         Gtk.main_quit()
 
+    def on_KeyRelease_event(self, widget, ev, data=None):
+        if ev.keyval == Gdk.KEY_KP_Multiply:
+            qty = str(barcodeEntry.get_text()).replace("*", "")
+            qtyLabel.set_text(qty)
+            clearText(barcodeEntry)
+
+        elif ev.keyval == Gdk.KEY_KP_Add:
+            qty = str(barcodeEntry.get_text()).replace("+", "")
+            addQtyLastIter(qty)
+            clearText(barcodeEntry)
+
+        elif ev.keyval == Gdk.KEY_Home:
+            jnsHargaLabel.set_text("Harga 1")
+
+        elif ev.keyval == Gdk.KEY_Page_Up:
+            jnsHargaLabel.set_text("Harga 2")
+
+        elif ev.keyval == Gdk.KEY_Page_Down:
+            jnsHargaLabel.set_text("Harga 3")
+
+        elif ev.keyval == Gdk.KEY_Delete:
+            listProduk.remove(listProduk[-1].iter)
+            hitungTotalBelanja(listProduk)
+
+        elif ev.keyval == Gdk.KEY_F2:
+            self.data_barang = sumber_data.get_data_produk()
+            caribarangwin.show()
+
     def on_BarcodeEntry_activate(self, *args):
         barkot = barcodeEntry.get_text()
-        clearBarcodeEntry()
+        clearText(barcodeEntry)
 
         if barkot == "":
             return
 
-        (update, totalBelanja) = updateListStore(barkot, listProduk)
-        print(update)
-        print(totalBelanja)
-
-        if update:
-            totalLabel.set_text(str(f'{totalBelanja:,}'))
-        else:
+        update = updateListStore(barkot, listProduk)
+        if not update:
             statusLabel.set_text("Barang Tidak Ditemukan")
 
+    def on_TreeView_key_release_event(self, widget, ev, data=None):
+        if ev.keyval == Gdk.KEY_Delete:
+            listProduk.remove(selection.get_selected()[1])
+            hitungTotalBelanja(listProduk)
+            barcodeEntry.grab_focus()
+
+    def on_CariBarangEntry_changed(self, widget):
+
+        hasil = list()
+        dicari = caribarang.get_text()
+        for barang in self.data_barang:
+            ratio = fuzz.token_set_ratio(dicari, barang[1])
+            ranked = list(barang)
+            ranked.append(ratio)
+            hasil.append(ranked)
+
+        hasil.sort(reverse=True, key=ranking)
+        for i in range(1, 15):
+            print(hasil[i])
+            listBarang.append(hasil[i])
 
 builder = Gtk.Builder()
 builder.add_from_file("ui/POSMainWindow.glade")
 builder.connect_signals(Handler())
 
 listProduk = builder.get_object("list_belanja")
+listBarang = builder.get_object("ListProduk")
 
 window = builder.get_object("KitaPos")
 window.show_all()
@@ -80,6 +157,12 @@ window.maximize()
 barcodeEntry = builder.get_object("BarcodeEntry")
 totalLabel = builder.get_object("TotalLabel")
 statusLabel = builder.get_object("StatusLabel")
+qtyLabel = builder.get_object("QTYLabel")
+jnsHargaLabel = builder.get_object("JenisHargaLabel")
+treeView = builder.get_object("TreeView")
+selection = treeView.get_selection()
+caribarang = builder.get_object("CariBarangEntry")
+caribarangwin = builder.get_object("CariBarang")
 
 ############################################################
 

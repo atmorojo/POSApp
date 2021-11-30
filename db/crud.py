@@ -40,6 +40,20 @@ class SumberData:
     cur.close()
     return produk
 
+  def get_data_produk(self):
+    data_produk = list()
+    cur = self.connection.cursor()
+    cur.execute("SELECT KODE, NAMA_PLU, \
+        HJUAL_ISI1, HJUAL_ISI2, \
+        HJUAL_ISI3 FROM TB_12MASTER")
+    items = cur.fetchall()
+
+    for item in items:
+      data_produk.append((item[0], item[1], str(item[2]), str(item[3]), str(item[4])))
+
+    return data_produk
+
+
 # def update_tabel():
 
 #  def daftar_tabel(self):

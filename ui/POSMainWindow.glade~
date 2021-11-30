@@ -2,6 +2,148 @@
 <!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
+  <object class="GtkListStore" id="ListProduk">
+    <columns>
+      <!-- column-name Kode -->
+      <column type="gchararray"/>
+      <!-- column-name Nama -->
+      <column type="gchararray"/>
+      <!-- column-name Harga1 -->
+      <column type="gchararray"/>
+      <!-- column-name Harga2 -->
+      <column type="gchararray"/>
+      <!-- column-name Harga3 -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">ets</col>
+        <col id="1" translatable="yes">tes</col>
+        <col id="2" translatable="yes"/>
+        <col id="3" translatable="yes"/>
+        <col id="4" translatable="yes"/>
+      </row>
+      <row>
+        <col id="0" translatable="yes">tes</col>
+        <col id="1" translatable="yes">tse</col>
+        <col id="2" translatable="yes"/>
+        <col id="3" translatable="yes"/>
+        <col id="4" translatable="yes"/>
+      </row>
+      <row>
+        <col id="0" translatable="yes">tis</col>
+        <col id="1" translatable="yes">tis</col>
+        <col id="2" translatable="yes"/>
+        <col id="3" translatable="yes"/>
+        <col id="4" translatable="yes"/>
+      </row>
+    </data>
+  </object>
+  <object class="GtkWindow" id="CariBarang">
+    <property name="width-request">700</property>
+    <property name="height-request">350</property>
+    <property name="can-focus">False</property>
+    <property name="modal">True</property>
+    <property name="skip-taskbar-hint">True</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkSearchEntry" id="CariBarangEntry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="has-focus">True</property>
+            <property name="is-focus">True</property>
+            <property name="margin-start">10</property>
+            <property name="margin-end">10</property>
+            <property name="margin-top">10</property>
+            <property name="margin-bottom">10</property>
+            <property name="primary-icon-name">edit-find-symbolic</property>
+            <property name="primary-icon-activatable">False</property>
+            <property name="primary-icon-sensitive">False</property>
+            <property name="placeholder-text" translatable="yes">Cari Nama Barang...</property>
+            <signal name="changed" handler="on_CariBarangEntry_changed" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkTreeView" id="CariBaran">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="model">ListProduk</property>
+            <property name="enable-search">False</property>
+            <property name="search-column">1</property>
+            <property name="enable-grid-lines">horizontal</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection"/>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="CariTree">
+                <property name="title" translatable="yes">Nama Barang</property>
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkCellRendererText" id="NamaBarang"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn">
+                <property name="min-width">150</property>
+                <property name="title" translatable="yes">Harga 1</property>
+                <property name="alignment">1</property>
+                <child>
+                  <object class="GtkCellRendererText" id="Harga1"/>
+                  <attributes>
+                    <attribute name="text">2</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn">
+                <property name="min-width">150</property>
+                <property name="title" translatable="yes">Harga 2</property>
+                <property name="alignment">1</property>
+                <child>
+                  <object class="GtkCellRendererText" id="Harga2"/>
+                  <attributes>
+                    <attribute name="text">3</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn">
+                <property name="min-width">150</property>
+                <property name="title" translatable="yes">Harga 3</property>
+                <property name="alignment">1</property>
+                <child>
+                  <object class="GtkCellRendererText" id="Harga3"/>
+                  <attributes>
+                    <attribute name="text">4</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkImage" id="icon_rekap_kas">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
@@ -28,18 +170,19 @@
       <column type="gchararray"/>
       <!-- column-name list_harga -->
       <column type="gchararray"/>
-      <!-- column-name list_diskon -->
+      <!-- column-name list_jenis_harga -->
       <column type="gchararray"/>
       <!-- column-name list_jumlah -->
       <column type="gchararray"/>
       <!-- column-name list_barcode -->
+      <column type="gchararray"/>
+      <!-- column-name list_kode -->
       <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkApplicationWindow" id="KitaPos">
     <property name="width-request">-1</property>
     <property name="can-focus">False</property>
-    <property name="resizable">False</property>
     <property name="show-menubar">False</property>
     <signal name="destroy" handler="on_KitaPos_destroy" swapped="no"/>
     <child>
@@ -246,20 +389,23 @@
                     <property name="can-focus">True</property>
                     <property name="shadow-type">in</property>
                     <child>
-                      <object class="GtkTreeView">
+                      <object class="GtkTreeView" id="TreeView">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="model">list_belanja</property>
                         <property name="enable-search">False</property>
+                        <signal name="key-release-event" handler="on_TreeView_key_release_event" swapped="no"/>
                         <child internal-child="selection">
-                          <object class="GtkTreeSelection"/>
+                          <object class="GtkTreeSelection" id="Selection"/>
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn">
                             <property name="title" translatable="yes">NAMA BARANG</property>
                             <property name="expand">True</property>
                             <child>
-                              <object class="GtkCellRendererText" id="itm_nama"/>
+                              <object class="GtkCellRendererText" id="itm_nama">
+                                <property name="scale">2</property>
+                              </object>
                               <attributes>
                                 <attribute name="text">0</attribute>
                               </attributes>
@@ -268,11 +414,13 @@
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn">
-                            <property name="min-width">160</property>
+                            <property name="min-width">80</property>
                             <property name="title" translatable="yes">QTY / SATUAN</property>
                             <property name="alignment">0.5</property>
                             <child>
-                              <object class="GtkCellRendererText" id="itm_qty"/>
+                              <object class="GtkCellRendererText" id="itm_qty">
+                                <property name="scale">2</property>
+                              </object>
                               <attributes>
                                 <attribute name="text">1</attribute>
                               </attributes>
@@ -287,6 +435,7 @@
                             <child>
                               <object class="GtkCellRendererText" id="itm_harga">
                                 <property name="xalign">1</property>
+                                <property name="scale">2</property>
                               </object>
                               <attributes>
                                 <attribute name="text">2</attribute>
@@ -297,11 +446,12 @@
                         <child>
                           <object class="GtkTreeViewColumn">
                             <property name="min-width">160</property>
-                            <property name="title" translatable="yes">DISKON</property>
+                            <property name="title" translatable="yes">Jenis Harga</property>
                             <property name="alignment">1</property>
                             <child>
-                              <object class="GtkCellRendererText" id="itm_diskon">
+                              <object class="GtkCellRendererText" id="itm_jenis_harga">
                                 <property name="xalign">1</property>
+                                <property name="scale">2</property>
                               </object>
                               <attributes>
                                 <attribute name="text">3</attribute>
@@ -317,6 +467,7 @@
                             <child>
                               <object class="GtkCellRendererText" id="itm_jumlah">
                                 <property name="xalign">1</property>
+                                <property name="scale">2</property>
                               </object>
                               <attributes>
                                 <attribute name="text">4</attribute>
@@ -345,8 +496,12 @@
                         <property name="can-focus">True</property>
                         <property name="has-focus">True</property>
                         <property name="is-focus">True</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">5</property>
+                        <property name="margin-end">5</property>
+                        <property name="margin-top">10</property>
+                        <property name="margin-bottom">5</property>
                         <signal name="activate" handler="on_BarcodeEntry_activate" swapped="no"/>
+                        <signal name="key-release-event" handler="on_KeyRelease_event" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -366,14 +521,13 @@
                             <property name="margin-end">6</property>
                             <property name="label-xalign">0.009999999776482582</property>
                             <child>
-                              <object class="GtkLabel">
+                              <object class="GtkLabel" id="QTYLabel">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <property name="margin-start">2</property>
                                 <property name="margin-end">2</property>
                                 <property name="margin-top">2</property>
                                 <property name="margin-bottom">2</property>
-                                <property name="label" translatable="yes">{{ QTY_BARANG }}</property>
                                 <property name="xalign">1</property>
                                 <attributes>
                                   <attribute name="weight" value="ultraheavy"/>
@@ -404,14 +558,14 @@
                             <property name="can-focus">False</property>
                             <property name="label-xalign">0.009999999776482582</property>
                             <child>
-                              <object class="GtkLabel">
+                              <object class="GtkLabel" id="JenisHargaLabel">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <property name="margin-start">2</property>
                                 <property name="margin-end">2</property>
                                 <property name="margin-top">2</property>
                                 <property name="margin-bottom">2</property>
-                                <property name="label" translatable="yes">{{ POTONGAN }}</property>
+                                <property name="label" translatable="yes">Harga 1</property>
                                 <property name="xalign">1</property>
                                 <attributes>
                                   <attribute name="weight" value="ultraheavy"/>
@@ -423,7 +577,7 @@
                               <object class="GtkLabel">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes">Potongan</property>
+                                <property name="label" translatable="yes">Jenis Harga</property>
                                 <attributes>
                                   <attribute name="weight" value="ultraheavy"/>
                                 </attributes>
